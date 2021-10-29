@@ -444,8 +444,12 @@ def train(number_of_epochs, net, trainloader, training_function, criterion, opti
 
         #2. Test the model
         if epoch == number_of_epochs - 1:
+            correct, total, test_loss, targets, preds = test_model(net, trainloader, criterion, True)
+            print("Train Result")
+            print(classification_report(targets, preds, target_names=target_names))
+            
             correct, total, test_loss, targets, preds = test_model(net, testloader, criterion, True)
-            print("")
+            print("Test Result")
             print(classification_report(targets, preds, target_names=target_names))
 
         else:
