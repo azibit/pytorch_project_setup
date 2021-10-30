@@ -105,19 +105,19 @@ def get_dataloader(dataset, batch_size, shuffle):
 
     return torch.utils.data.DataLoader(dataset, batch_size = batch_size, shuffle = shuffle)
 
-def replace_fc_layer_for_resnets(net, number_of_classes):
+def replace_fc_layer_for_resnets(net_layer, number_of_classes):
     """
     Replace the last fully connected layer with new layer
 
-    net: The model to be updated
+    net_layer: The layer to be replaced
     number_of_classes: The number of classes the new classifier would now have
     """
 
-    num_features = net.fc.in_features
+    num_features = net_layer.in_features
 
-    net.fc = nn.Linear(num_features, number_of_classes)
+    net_layer = nn.Linear(num_features, number_of_classes)
 
-    return net
+    return net_layer
 
 def perform_prediction(model, inputs, targets, criterion_to_use):
 
@@ -447,7 +447,7 @@ def train(number_of_epochs, net, trainloader, training_function, criterion, opti
             correct, total, test_loss, targets, preds = test_model(net, trainloader, criterion, True)
             print("Train Result")
             print(classification_report(targets, preds, target_names=target_names))
-            
+
             correct, total, test_loss, targets, preds = test_model(net, testloader, criterion, True)
             print("Test Result")
             print(classification_report(targets, preds, target_names=target_names))
